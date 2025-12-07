@@ -3,15 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Meu Treino — gerenciador de hábitos com estatísticas e sincronização offline">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Hábitos</title>
+    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="habitos.css">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23667eea' width='192' height='192'/><text x='50%' y='50%' font-size='100' fill='white' text-anchor='middle' dominant-baseline='middle' font-family='Arial'>✔</text></svg>">
 </head>
 <body>
 
     <div class="menu">
-        <a href="treino1.html" rel="prev">Menu</a>
+        <a href="treino1.html">Menu</a>
         <a href="habitos.html">Hábitos</a>
+        <a href="stats.html">Estatísticas</a>
+        <button id="darkModeToggle" title="Alternar modo escuro" style="background:none;border:none;cursor:pointer;font-size:20px;">🌙</button>
+        <button id="installBtn" style="background:none;border:none;cursor:pointer;font-size:16px;display:none;">📲 Instalar</button>
     </div>
 
     <div class="habitos">
@@ -55,5 +64,35 @@
     </noscript>
 
     <script src="script.min.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(err => console.log('SW error:', err));
+        }
+        const darkBtn = document.getElementById('darkModeToggle');
+        darkBtn.addEventListener('click', function() {
+            const isDark = document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', isDark);
+            this.textContent = isDark ? '☀️' : '🌙';
+        });
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            darkBtn.textContent = '☀️';
+        }
+        let deferredPrompt;
+        const installBtn = document.getElementById('installBtn');
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.style.display = 'inline-block';
+        });
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                deferredPrompt = null;
+                installBtn.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>

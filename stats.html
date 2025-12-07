@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estatísticas — Meu Treino</title>
+    <link rel="stylesheet" href="habitos.css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <style>
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .stat-card:hover { transform: translateY(-5px); }
+        .stat-card h3 { margin: 0; font-size: 14px; opacity: 0.9; }
+        .stat-card .value { font-size: 32px; font-weight: bold; margin: 10px 0; }
+        .chart-container { position: relative; height: 300px; margin: 20px; background: white; padding: 10px; border-radius: 12px; }
+    </style>
+</head>
+<body>
+    <div class="menu">
+        <a href="treino1.html">Menu</a>
+        <a href="habitos.html">Hábitos</a>
+        <a href="stats.html">Estatísticas</a>
+    </div>
+
+    <h1>Estatísticas dos Seus Hábitos 📊</h1>
+
+    <div class="stats-container">
+        <div class="stat-card">
+            <h3>Total de Entradas</h3>
+            <div class="value" id="totalEntries">0</div>
+        </div>
+        <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+            <h3>Sessões Completas</h3>
+            <div class="value" id="completeSessions">0</div>
+        </div>
+        <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+            <h3>Taxa de Sucesso</h3>
+            <div class="value" id="successRate">0%</div>
+        </div>
+        <div class="stat-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+            <h3>Streak Atual</h3>
+            <div class="value" id="currentStreak">0</div>
+        </div>
+    </div>
+
+    <div class="chart-container">
+        <canvas id="habitsChart"></canvas>
+    </div>
+
+    <div class="chart-container">
+        <canvas id="trendChart"></canvas>
+    </div>
+
+    <script src="stats.js"></script>
+</body>
+</html>
