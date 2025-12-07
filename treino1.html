@@ -4,27 +4,443 @@
     <meta charset="UTF-8">
     <meta name="description" content="Meu Treino — anote e acompanhe hábitos diários de forma simples e divertida">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sepp</title>
+    <title>Sepp - Rastreador de Hábitos Premium</title>
     <link rel="stylesheet" href="treino.css">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+
+        /* Animated background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" /></filter></filter></defs><rect width="1200" height="600" fill="rgba(255,255,255,0.05)" filter="url(%23noise)"/></svg>');
+            animation: drift 15s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        @keyframes drift {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(30px, 20px); }
+        }
+
+        /* Floating orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            z-index: 1;
+        }
+
+        .orb-1 {
+            width: 300px;
+            height: 300px;
+            background: #ff006e;
+            top: -100px;
+            left: -100px;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .orb-2 {
+            width: 250px;
+            height: 250px;
+            background: #00d9ff;
+            bottom: -50px;
+            right: -50px;
+            animation: float 15s infinite ease-in-out reverse;
+        }
+
+        .orb-3 {
+            width: 200px;
+            height: 200px;
+            background: #ffd60a;
+            top: 50%;
+            left: 50%;
+            animation: float 25s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(20px, -30px); }
+            50% { transform: translate(-20px, 20px); }
+            75% { transform: translate(30px, 10px); }
+        }
+
+        /* Main container */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .menu {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px 25px;
+            border-radius: 50px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 100;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu a {
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .menu a:hover {
+            color: #ffd60a;
+            transform: translateY(-2px);
+        }
+
+        .menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #ffd60a;
+            transition: width 0.3s ease;
+        }
+
+        .menu a:hover::after {
+            width: 100%;
+        }
+
+        .menu button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(20deg);
+        }
+
+        /* Hero section */
+        .hero {
+            text-align: center;
+            color: white;
+            animation: slideUp 0.8s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: 72px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff 0%, #ffd60a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -2px;
+            text-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero .subtitle {
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 40px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .hero .tagline {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 60px;
+            max-width: 600px;
+            line-height: 1.8;
+        }
+
+        /* CTA Buttons */
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 80px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 18px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ffd60a 0%, #ff006e 100%);
+            color: #1a1a2e;
+            box-shadow: 0 10px 30px rgba(255, 214, 10, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 214, 10, 0.6);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Features grid */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 80px;
+            width: 100%;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .feature-card p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            margin-top: 80px;
+        }
+
+        footer a {
+            color: #ffd60a;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        footer a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 48px;
+            }
+
+            .hero .subtitle {
+                font-size: 18px;
+            }
+
+            .menu {
+                flex-direction: column;
+                gap: 10px;
+                right: 10px;
+                top: 10px;
+                padding: 10px 15px;
+            }
+
+            .menu a {
+                font-size: 14px;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Sepp — Anote seus hábitos</h1>
-    <p class="lead">Teste funcionalidades, experimente o <strong>Modo Divertido</strong> e divirta-se enquanto cria hábitos!</p>
+    <!-- Animated background -->
+    <div class="animated-bg"></div>
+    
+    <!-- Floating orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <!-- Navigation -->
     <div class="menu">
-        <a href="treino1.html" rel="prev">Menu</a>
+        <a href="treino1.html">Menu</a>
         <a href="habitos.html">Hábitos</a>
         <a href="stats.html">Estatísticas</a>
         <a href="labs.html">Labs</a>
         <button id="dark-mode-btn" type="button" title="Alternar modo escuro">🌙</button>
     </div>
 
-    <p class="frase1">Olá — bem-vindo ao seu site para anotar hábitos</p>
-    <p class="frase2">Espero que goste. Este site vai te ajudar a relembrar os hábitos do dia a dia.</p>
+    <!-- Main content -->
+    <div class="container">
+        <div class="hero">
+            <h1>Sepp</h1>
+            <p class="subtitle">Rastreador de Hábitos Premium</p>
+            <p class="tagline">
+                Transforme seus objetivos em hábitos diários. Com Sepp, você acompanha seu progresso,
+                celebra vitórias e constrói a melhor versão de si mesmo. Tudo com estilo! ✨
+            </p>
 
-    <footer>
-        <p>Repositório: <a href="https://github.com/rubenty432/meu-treino" target="_blank" rel="noopener">github.com/rubenty432/meu-treino</a></p>
-    </footer>
+            <div class="cta-buttons">
+                <a href="habitos.html" class="btn btn-primary">Começar Agora 🚀</a>
+                <a href="labs.html" class="btn btn-secondary">Explorar Labs 🔬</a>
+            </div>
+
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Estatísticas Detalhadas</h3>
+                    <p>Visualize seu progresso com gráficos interativos e análises em tempo real.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>37+ Linguagens</h3>
+                    <p>Explore exemplos de código em 37 linguagens de programação diferentes.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🌙</div>
+                    <h3>Modo Escuro</h3>
+                    <p>Interface elegante com suporte a tema escuro para conforto dos olhos.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Funciona Offline</h3>
+                    <p>PWA completo com suporte offline - rastreie hábitos em qualquer lugar.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Design Moderno</h3>
+                    <p>Interface intuitiva, responsiva e incrivelmente bonita.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔐</div>
+                    <h3>Dados Seguros</h3>
+                    <p>Todos os seus dados são armazenados localmente com segurança total.</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>
+                Construído com 💜 por 
+                <a href="https://github.com/rubenty432/meu-treino" target="_blank" rel="noopener">
+                    rubenty432/meu-treino
+                </a>
+            </p>
+            <p style="margin-top: 10px; font-size: 12px;">
+                © 2025 Sepp. Todos os direitos reservados.
+            </p>
+        </footer>
+    </div>
 
     <script>
         // Dark mode toggle
@@ -40,6 +456,36 @@
             const isDark = document.body.classList.toggle('dark-mode');
             localStorage.setItem('darkMode', isDark);
             darkModeBtn.textContent = isDark ? '☀️' : '🌙';
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Add subtle mouse tracking effect
+        document.addEventListener('mousemove', (e) => {
+            const orbs = document.querySelectorAll('.orb');
+            orbs.forEach(orb => {
+                const rect = orb.getBoundingClientRect();
+                const distance = Math.sqrt(
+                    Math.pow(e.clientX - rect.left, 2) + 
+                    Math.pow(e.clientY - rect.top, 2)
+                );
+                
+                if (distance < 200) {
+                    const angle = Math.atan2(e.clientY - rect.top, e.clientX - rect.left);
+                    const moveX = Math.cos(angle) * 20;
+                    const moveY = Math.sin(angle) * 20;
+                    orb.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                }
+            });
         });
     </script>
 </body>
