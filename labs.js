@@ -740,6 +740,533 @@ def manager = new HabitManager()
 manager.addHabit("Exercício")
 manager.logEntry("Exercício")
 println manager.getStats()`
+    },
+    ocaml: {
+        title: "OCaml 🧬",
+        description: "Programação funcional tipada",
+        code: `(* OCaml - Linguagem funcional com tipos *)
+type habit = {
+  name: string;
+  entries: string list;
+}
+
+let calculate_streak habit =
+  List.length habit.entries
+
+let create_habit name =
+  { name; entries = [] }
+
+let add_entry habit date =
+  { habit with entries = date :: habit.entries }
+
+let analyze_habits habits =
+  List.map (fun h ->
+    (h.name, calculate_streak h)
+  ) habits
+
+let () =
+  let h1 = create_habit "Exercício" in
+  let h2 = add_entry h1 "07/12/2025" in
+  Printf.printf "Streak: %d\\n" (calculate_streak h2)`
+    },
+    haskell: {
+        title: "Haskell 🔷",
+        description: "Puramente funcional",
+        code: `-- Haskell - Linguagem puramente funcional
+import Data.List (sortBy)
+import Data.Ord (comparing)
+
+data Habit = Habit
+  { habitName :: String
+  , entries :: [String]
+  } deriving (Show, Eq)
+
+calculateStreak :: Habit -> Int
+calculateStreak = length . entries
+
+createHabit :: String -> Habit
+createHabit name = Habit name []
+
+addEntry :: Habit -> String -> Habit
+addEntry h date = h { entries = date : entries h }
+
+analyzeHabits :: [Habit] -> [(String, Int)]
+analyzeHabits = map (\\h -> (habitName h, calculateStreak h))
+
+main :: IO ()
+main = do
+  let h = createHabit "Exercício"
+  let h' = addEntry h "07/12/2025"
+  putStrLn $ "Streak: " ++ show (calculateStreak h')`
+    },
+    fsharp: {
+        title: "F# 📗",
+        description: ".NET funcional",
+        code: `// F# - Funcional no .NET
+type Habit = {
+    Name: string
+    Entries: string list
+}
+
+let calculateStreak habit =
+    habit.Entries |> List.length
+
+let createHabit name =
+    { Name = name; Entries = [] }
+
+let addEntry date habit =
+    { habit with Entries = date :: habit.Entries }
+
+let analyzeHabits habits =
+    habits
+    |> List.map (fun h -> (h.Name, calculateStreak h))
+    |> List.sortByDescending snd
+
+let main argv =
+    let h = createHabit "Exercício"
+    let h' = addEntry "07/12/2025" h
+    printfn "Streak: %d" (calculateStreak h')
+    0`
+    },
+    jvm: {
+        title: "Clojure 🌊",
+        description: "LISP moderno JVM",
+        code: `; Clojure - Data manipulation
+(defn calculate-streak [entries]
+  (count entries))
+
+(defn create-habit [name]
+  {:name name :entries []})
+
+(defn add-entry [habit date]
+  (update habit :entries conj date))
+
+(defn analyze-habits [habits]
+  (map #(assoc % :streak (calculate-streak (:entries %)))
+       habits))
+
+(def my-habits
+  [(create-habit "Exercício")
+   (create-habit "Leitura")])
+
+(def analyzed 
+  (analyze-habits my-habits))
+
+(println analyzed)`
+    },
+    nim: {
+        title: "Nim ⚙️",
+        description: "Eficiente e elegante",
+        code: `# Nim - Linguagem moderna
+import tables, sequtils
+
+type
+  Habit = object
+    name: string
+    entries: seq[string]
+
+proc calculateStreak(habit: Habit): int =
+  habit.entries.len
+
+proc createHabit(name: string): Habit =
+  Habit(name: name, entries: @[])
+
+proc addEntry(habit: var Habit, date: string) =
+  habit.entries.add(date)
+
+proc analyzeHabits(habits: seq[Habit]): Table[string, int] =
+  result = initTable[string, int]()
+  for habit in habits:
+    result[habit.name] = calculateStreak(habit)
+
+var h = createHabit("Exercício")
+h.addEntry("07/12/2025")
+echo "Streak: " & $calculateStreak(h)`
+    },
+    crystal: {
+        title: "Crystal 💎",
+        description: "Sintaxe Ruby, desempenho C",
+        code: `# Crystal - Ruby com performance C
+class Habit
+  property name : String
+  property entries : Array(String)
+  
+  def initialize(@name, @entries = [] of String)
+  end
+  
+  def calculate_streak
+    @entries.size
+  end
+  
+  def add_entry(date : String)
+    @entries.push(date)
+  end
+  
+  def stats
+    {
+      name: @name,
+      streak: calculate_streak,
+      total: @entries.size
+    }
+  end
+end
+
+h = Habit.new("Exercício")
+h.add_entry("07/12/2025")
+puts h.stats`
+    },
+    julia: {
+        title: "Julia 📈",
+        description: "Computação científica",
+        code: `# Julia - Computação científica
+using Statistics
+
+struct Habit
+    name::String
+    entries::Vector{String}
+end
+
+function calculate_streak(habit::Habit)::Int
+    return length(habit.entries)
+end
+
+function create_habit(name::String)::Habit
+    return Habit(name, String[])
+end
+
+function add_entry(habit::Habit, date::String)::Habit
+    return Habit(habit.name, vcat(habit.entries, date))
+end
+
+function analyze_habits(habits::Vector{Habit})
+    return [(h.name, calculate_streak(h)) for h in habits]
+end
+
+h = create_habit("Exercício")
+h = add_entry(h, "07/12/2025")
+println("Streak: $(calculate_streak(h)) dias")`
+    },
+    erlang: {
+        title: "Erlang 🔴",
+        description: "Distribuído e fault-tolerant",
+        code: `%% Erlang - Sistema distribuído
+-module(habit_tracker).
+-export([calculate_streak/1, create_habit/1, add_entry/2]).
+
+-record(habit, {name, entries = []}).
+
+calculate_streak(Habit) ->
+    length(Habit#habit.entries).
+
+create_habit(Name) ->
+    #habit{name = Name}.
+
+add_entry(Habit, Date) ->
+    Habit#habit{
+        entries = [Date | Habit#habit.entries]
+    }.
+
+analyze_habits(Habits) ->
+    [{H#habit.name, calculate_streak(H)} || H <- Habits].
+
+start() ->
+    H = create_habit("Exercício"),
+    H2 = add_entry(H, "07/12/2025"),
+    io:format("Streak: ~w~n", [calculate_streak(H2)]).`
+    },
+    coffeescript: {
+        title: "CoffeeScript ☕",
+        description: "Sintaxe concisa",
+        code: `# CoffeeScript - Sintaxe limpa
+class Habit
+  constructor: (@name, @entries = []) ->
+  
+  calculateStreak: ->
+    @entries.length
+  
+  addEntry: (date) ->
+    @entries.push(date)
+    @
+  
+  getStats: ->
+    {
+      @name,
+      streak: @calculateStreak(),
+      total: @entries.length
+    }
+
+h = new Habit "Exercício"
+h.addEntry "07/12/2025"
+console.log h.getStats()`
+    },
+    tcl: {
+        title: "Tcl 🎭",
+        description: "Tool Command Language",
+        code: `#!/usr/bin/env tclsh
+# Tcl - Scripting poderoso
+
+package require Tcl 8.5
+
+proc create_habit {name} {
+    return [list $name {}]
+}
+
+proc calculate_streak {habit} {
+    set entries [lindex $habit 1]
+    return [llength $entries]
+}
+
+proc add_entry {habit date} {
+    set name [lindex $habit 0]
+    set entries [lindex $habit 1]
+    lappend entries $date
+    return [list $name $entries]
+}
+
+proc analyze_habits {habits} {
+    set results {}
+    foreach habit $habits {
+        set name [lindex $habit 0]
+        set streak [calculate_streak $habit]
+        lappend results [list $name $streak]
+    }
+    return $results
+}
+
+set h [create_habit "Exercício"]
+set h [add_entry $h "07/12/2025"]
+puts "Streak: [calculate_streak $h] dias"`
+    },
+    zig: {
+        title: "Zig ⚡",
+        description: "Segurança sem GC",
+        code: `// Zig - Seguro e eficiente
+const std = @import("std");
+
+const Habit = struct {
+    name: []const u8,
+    entries: std.ArrayList([]const u8),
+};
+
+pub fn calculateStreak(habit: Habit) usize {
+    return habit.entries.items.len;
+}
+
+pub fn createHabit(
+    allocator: std.mem.Allocator,
+    name: []const u8
+) !Habit {
+    return Habit{
+        .name = name,
+        .entries = std.ArrayList([]const u8).init(allocator),
+    };
+}
+
+pub fn main() !void {
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    defer _ = gpa.deinit();
+    const allocator = gpa.allocator();
+    
+    var h = try createHabit(allocator, "Exercício");
+    try h.entries.append("07/12/2025");
+    
+    std.debug.print(
+        "Streak: {}\\n",
+        .{calculateStreak(h)}
+    );
+}`
+    },
+    v: {
+        title: "V 🚀",
+        description: "Rápido e simples",
+        code: `// V - Linguagem compilada rápida
+struct Habit {
+    name string
+    entries []string
+}
+
+fn (h Habit) calculate_streak() int {
+    return h.entries.len
+}
+
+fn create_habit(name string) Habit {
+    return Habit{
+        name: name
+        entries: []
+    }
+}
+
+fn (mut h Habit) add_entry(date string) {
+    h.entries << date
+}
+
+fn (h Habit) stats() map[string]int {
+    return {
+        'streak': h.calculate_streak()
+        'total': h.entries.len
+    }
+}
+
+fn main() {
+    mut h := create_habit("Exercício")
+    h.add_entry("07/12/2025")
+    println("Streak: \${h.calculate_streak()} dias")
+}`
+    },
+    odin: {
+        title: "Odin 🎮",
+        description: "Game dev performance",
+        code: `package main
+
+import "core:fmt"
+import "core:slice"
+
+Habit :: struct {
+    name: string,
+    entries: [dynamic]string,
+}
+
+calculate_streak :: proc(h: ^Habit) -> int {
+    return len(h.entries)
+}
+
+create_habit :: proc(name: string) -> Habit {
+    return Habit{
+        name = name,
+        entries = make([dynamic]string),
+    }
+}
+
+add_entry :: proc(h: ^Habit, date: string) {
+    append(&h.entries, date)
+}
+
+main :: proc() {
+    h := create_habit("Exercício")
+    add_entry(&h, "07/12/2025")
+    fmt.println("Streak:", calculate_streak(&h), "dias")
+}`
+    },
+    gd: {
+        title: "GDScript 🎮",
+        description: "Godot Engine",
+        code: `# GDScript - Godot Engine
+extends Node
+
+class_name Habit
+
+export var habit_name: String = ""
+var entries: Array = []
+
+func _ready():
+    print("Hábito: ", habit_name)
+
+func calculate_streak() -> int:
+    return entries.size()
+
+func add_entry(date: String) -> void:
+    entries.append(date)
+    emit_signal("entry_added", habit_name, date)
+
+func get_stats() -> Dictionary:
+    return {
+        "name": habit_name,
+        "streak": calculate_streak(),
+        "total": entries.size(),
+        "success_rate": (calculate_streak() / 30.0) * 100
+    }
+
+signal entry_added(habit, date)
+
+func _on_Button_pressed() -> void:
+    add_entry(OS.get_datetime_from_system())
+    print(get_stats())`
+    },
+    janet: {
+        title: "Janet 🎶",
+        description: "Lisp moderno",
+        code: `# Janet - Lisp moderno e rápido
+(defn calculate-streak [entries]
+  (length entries))
+
+(defn create-habit [name]
+  @{:name name :entries @[]})
+
+(defn add-entry [habit date]
+  (update habit :entries (fn [e] (array/push e date))))
+
+(defn analyze-habits [habits]
+  (map (fn [h]
+    (put h :streak (calculate-streak (h :entries))))
+    habits))
+
+(defn main [&]
+  (var h (create-habit "Exercício"))
+  (set h (add-entry h "07/12/2025"))
+  (print "Streak: " (calculate-streak (h :entries)) " dias"))
+
+(main)`
+    },
+    unison: {
+        title: "Unison 🌐",
+        description: "Distribuído",
+        code: `-- Unison - Linguagem distribuída
+type Habit = {name: Text, entries: [Text]}
+
+calculateStreak : Habit -> Nat
+calculateStreak h = List.size h.entries
+
+createHabit : Text -> Habit
+createHabit name = {name = name, entries = []}
+
+addEntry : Habit -> Text -> Habit
+addEntry h date = 
+  {h | entries = h.entries ++ [date]}
+
+analyzeHabits : [Habit] -> [Nat]
+analyzeHabits habits =
+  List.map calculateStreak habits
+
+-- Exemplo
+> habit = createHabit "Exercício"
+> habit' = addEntry habit "07/12/2025"
+> calculateStreak habit'`
+    },
+    modula2: {
+        title: "Modula-2 📦",
+        description: "Sistemas modulares",
+        code: `DEFINITION MODULE Habits;
+
+TYPE
+  Habit = RECORD
+    name: ARRAY [0..31] OF CHAR;
+    entries: CARDINAL;
+  END;
+
+PROCEDURE CalculateStreak(h: Habit): CARDINAL;
+PROCEDURE CreateHabit(name: ARRAY OF CHAR): Habit;
+PROCEDURE AddEntry(VAR h: Habit);
+PROCEDURE AnalyzeHabits(habits: ARRAY OF Habit);
+
+END Habits.
+
+IMPLEMENTATION MODULE Habits;
+
+PROCEDURE CalculateStreak(h: Habit): CARDINAL;
+BEGIN
+  RETURN h.entries;
+END CalculateStreak;
+
+PROCEDURE CreateHabit(name: ARRAY OF CHAR): Habit;
+VAR
+  h: Habit;
+BEGIN
+  COPY(name, h.name);
+  h.entries := 0;
+  RETURN h;
+END CreateHabit;
+
+END Habits.`
     }
 };
 
