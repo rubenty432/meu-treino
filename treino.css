@@ -37,3 +37,14 @@ div.menu p {
     font-size:23px;
 }
 
+/* Fun mode tweaks (applied on body.fun) */
+body.fun .frase1, body.fun .frase2 {
+    color: #3a2;
+    transform: rotate(-1deg);
+}
+footer {
+    margin-top: 24px;
+    font-size: 14px;
+    color: #333;
+}
+

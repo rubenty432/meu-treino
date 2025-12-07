@@ -74,3 +74,27 @@ input {
     border-radius: 20px;
     box-shadow: 0 8px 32px rgba(0,0,0,0.1);
 }
+
+/* Fun mode styles */
+.fun body, .fun .habitos {
+    background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 99%);
+}
+.fun .guardar {
+    background: linear-gradient(90deg,#fff8dc,#ffe4e1);
+}
+.controls button {
+    margin-right: 10px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+}
+.controls #toggleFun {
+    background: #ffdf7e;
+}
+.noscript-warning {
+    background: #ffdddd;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 12px;
+}

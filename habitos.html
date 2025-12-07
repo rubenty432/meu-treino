@@ -36,11 +36,19 @@
         <span id="res4"></span>
 
         <p></p>
-        <button class="salvar" id="salvar" type="button">Salvar hábitos</button>
+        <div class="controls">
+            <button class="salvar" id="salvar" type="button">Salvar hábitos</button>
+            <button id="clearHistory" type="button">Limpar histórico</button>
+            <button id="toggleFun" type="button">Modo Divertido 🎉</button>
+        </div>
     </div>
 
     <p></p>
-    <div class="guardar" id="guardar"></div>
+    <div class="guardar" id="guardar" aria-live="polite"></div>
+
+    <noscript>
+        <div class="noscript-warning">Este site usa JavaScript para funcionar corretamente. Por favor, ative o JavaScript.</div>
+    </noscript>
 
     <script src="script.min.js"></script>
 </body>
