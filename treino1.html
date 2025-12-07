@@ -14,6 +14,9 @@
     <div class="menu">
         <a href="treino1.html" rel="prev">Menu</a>
         <a href="habitos.html">Hábitos</a>
+        <a href="stats.html">Estatísticas</a>
+        <a href="labs.html">Labs</a>
+        <button id="dark-mode-btn" type="button" title="Alternar modo escuro">🌙</button>
     </div>
 
     <p class="frase1">Olá — bem-vindo ao seu site para anotar hábitos</p>
@@ -22,6 +25,25 @@
     <footer>
         <p>Repositório: <a href="https://github.com/rubenty432/meu-treino" target="_blank" rel="noopener">github.com/rubenty432/meu-treino</a></p>
     </footer>
+
+    <script>
+        // Dark mode toggle
+        const darkModeBtn = document.getElementById('dark-mode-btn');
+        const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+        
+        if (savedDarkMode) {
+            document.body.classList.add('dark-mode');
+            darkModeBtn.textContent = '☀️';
+        }
+        
+        darkModeBtn.addEventListener('click', () => {
+            const isDark = document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', isDark);
+            darkModeBtn.textContent = isDark ? '☀️' : '🌙';
+        });
+    </script>
+</body>
+</html>
 
 </body>
 </html>

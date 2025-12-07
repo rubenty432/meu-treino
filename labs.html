@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Labs — Meu Treino</title>
+    <link rel="stylesheet" href="habitos.css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        .labs-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px;
+        }
+        .lab-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .lab-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+        }
+        .lab-card h3 { margin-top: 0; }
+        .lab-card .lang-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.3);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+        .lab-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+        .lab-modal.active {
+            display: flex;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 700px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .modal-content h2 { margin-top: 0; }
+        .code-block {
+            background: #f5f5f5;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        .close-modal {
+            cursor: pointer;
+            font-size: 28px;
+            font-weight: bold;
+            color: #666;
+            float: right;
+        }
+        .close-modal:hover { color: #000; }
+    </style>
+</head>
+<body>
+    <div class="menu">
+        <a href="treino1.html">Menu</a>
+        <a href="habitos.html">Hábitos</a>
+        <a href="stats.html">Estatísticas</a>
+        <a href="labs.html" class="active">Labs</a>
+        <button id="darkModeToggle" title="Alternar modo escuro" style="background:none;border:none;cursor:pointer;font-size:20px;">🌙</button>
+    </div>
+
+    <h1>Labs — Múltiplas Linguagens de Programação 🚀</h1>
+    <p style="text-align: center; font-size: 16px; margin: 20px;">Explore ejemplos e ferramentas em 10+ linguagens diferentes!</p>
+
+    <div class="labs-container">
+        <!-- JavaScript -->
+        <div class="lab-card" style="background: linear-gradient(135deg, #f7df1e 0%, #ffb703 100%);" onclick="openLab('js')">
+            <h3>JavaScript 🟨</h3>
+            <p>Calculadora de hábitos com validação em tempo real</p>
+            <div class="lang-badge">Frontend/Node.js</div>
+        </div>
+
+        <!-- Python -->
+        <div class="lab-card" style="background: linear-gradient(135deg, #3776ab 0%, #ffd43b 100%);" onclick="openLab('python')">
+            <h3>Python 🐍</h3>
+            <p>Análise de dados de hábitos com Pandas</p>
+            <div class="lang-badge">Data Science</div>
+        </div>
+
+        <!-- Go -->
+        <div class="lab-card" style="background: linear-gradient(135deg, #00add8 0%, #ce3262 100%);" onclick="openLab('go')">
+            <h3>Go 🏃</h3>
+            <p>Servidor HTTP rápido para API de hábitos</p>
+            <div class="lang-badge">Backend</div>
+        </div>
+
+        <!-- Rust -->
+        <div class="lab-card" style="background: linear-gradient(135deg, #ce422b 0%, #f74c00 100%);" onclick="openLab('rust')">
+            <h3>Rust 🦀</h3>
+            <p>Sistema seguro de gerenciamento de memória</p>
+            <div class="lang-badge">Systems</div>
+        </div>
+
+        <!-- TypeScript -->
+        <div class="lab-card" style="background: linear-gradient(135deg, #2b7a0b 0%, #3178c6 100%);" onclick="openLab('ts')">
+            <h3>TypeScript 📘</h3>
+            <p>Tipagem estática e segurança de tipos</p>
+            <div class="lang-badge">Frontend/Backend</div>
+        </div>
+
+        <!-- Java -->
+        <div class="lab-card" style="background: linear-gradient(135deg, #ed8936 0%, #f39237 100%);" onclick="openLab('java')">
+            <h3>Java ☕</h3>
+            <p>Aplicação desktop com Spring Boot</p>
+            <div class="lang-badge">Enterprise</div>
+        </div>
+
+        <!-- C# -->
+        <div class="lab-card" style="background: linear-gradient(135deg, #239120 0%, #512bd4 100%);" onclick="openLab('csharp')">
+            <h3>C# 🔷</h3>
+            <p>Backend com .NET Core e Entity Framework</p>
+            <div class="lang-badge">Enterprise</div>
+        </div>
+
+        <!-- PHP -->
+        <div class="lab-card" style="background: linear-gradient(135deg, #777bb4 0%, #f1428a 100%);" onclick="openLab('php')">
+            <h3>PHP 🐘</h3>
+            <p>API REST com Laravel framework</p>
+            <div class="lang-badge">Web</div>
+        </div>
+
+        <!-- Ruby -->
+        <div class="lab-card" style="background: linear-gradient(135deg, #cc342d 0%, #ed1c24 100%);" onclick="openLab('ruby')">
+            <h3>Ruby 💎</h3>
+            <p>Web framework Rails para gestão de hábitos</p>
+            <div class="lang-badge">Web</div>
+        </div>
+
+        <!-- Kotlin -->
+        <div class="lab-card" style="background: linear-gradient(135deg, #7f52ff 0%, #4991ff 100%);" onclick="openLab('kotlin')">
+            <h3>Kotlin 🎯</h3>
+            <p>App Android nativo com coroutines</p>
+            <div class="lang-badge">Mobile</div>
+        </div>
+
+        <!-- SQL -->
+        <div class="lab-card" style="background: linear-gradient(135deg, #336791 0%, #13724f 100%);" onclick="openLab('sql')">
+            <h3>SQL 🗄️</h3>
+            <p>Queries avançadas para análise de hábitos</p>
+            <div class="lang-badge">Database</div>
+        </div>
+
+        <!-- Bash -->
+        <div class="lab-card" style="background: linear-gradient(135deg, #4eaa25 0%, #000 100%);" onclick="openLab('bash')">
+            <h3>Bash 🐚</h3>
+            <p>Scripts de automação e CI/CD</p>
+            <div class="lang-badge">DevOps</div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="labModal" class="lab-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeLab()">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="labs.js"></script>
+    <script>
+        // Dark mode
+        const darkBtn = document.getElementById('darkModeToggle');
+        if (darkBtn) {
+            darkBtn.addEventListener('click', function() {
+                const isDark = document.body.classList.toggle('dark-mode');
+                localStorage.setItem('darkMode', isDark);
+                this.textContent = isDark ? '☀️' : '🌙';
+            });
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark-mode');
+                darkBtn.textContent = '☀️';
+            }
+        }
+    </script>
+</body>
+</html>
