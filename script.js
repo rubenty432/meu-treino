@@ -85,6 +85,150 @@ function restoreInputs() {
     }
 }
 
+// --- New features: export/import, undo clear, confetti, sound, shortcuts ---
+
+// Backup last history before clear so we can undo
+function backupHistorico() {
+    try {
+        const h = localStorage.getItem('historico');
+        if (h !== null) localStorage.setItem('historico_backup', h);
+    } catch (e) { console.warn('Não foi possível criar backup do histórico', e); }
+}
+
+function undoClear() {
+    try {
+        const b = localStorage.getItem('historico_backup');
+        if (!b) { alert('Nenhum backup disponível.'); return; }
+        localStorage.setItem('historico', b);
+        localStorage.removeItem('historico_backup');
+        renderHistorico();
+        alert('Histórico restaurado.');
+    } catch (e) { console.error('Erro ao desfazer limpeza:', e); alert('Erro ao desfazer limpeza.'); }
+}
+
+document.getElementById('undoClear').addEventListener('click', function(){ undoClear(); });
+
+// Export histórico como arquivo JSON
+function exportHistorico() {
+    try {
+        const historico = localStorage.getItem('historico') || '[]';
+        const blob = new Blob([historico], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'historico_habitos.json';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+    } catch (e) { console.error('Erro ao exportar histórico:', e); alert('Erro ao exportar.'); }
+}
+
+document.getElementById('exportBtn').addEventListener('click', exportHistorico);
+
+// Import histórico (merge) a partir de arquivo JSON
+document.getElementById('importFile').addEventListener('change', function(evt) {
+    const f = evt.target.files && evt.target.files[0];
+    if (!f) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const parsed = JSON.parse(e.target.result);
+            if (!Array.isArray(parsed)) { alert('Arquivo inválido. Deve ser um array JSON.'); return; }
+            const current = JSON.parse(localStorage.getItem('historico') || '[]');
+            const merged = current.concat(parsed);
+            localStorage.setItem('historico', JSON.stringify(merged));
+            renderHistorico();
+            alert('Importação concluída.');
+        } catch (err) { console.error('Erro ao importar:', err); alert('Erro ao importar. Veja o console.'); }
+    };
+    reader.readAsText(f);
+    // reset input
+    evt.target.value = '';
+});
+
+// Modify clear to backup first
+const originalClearHandler = document.getElementById('clearHistory').onclick;
+document.getElementById('clearHistory').addEventListener('click', function(){
+    backupHistorico();
+    // proceed with existing clear logic by triggering the element click original flow
+    // We'll just reuse the same logic already defined above by calling the handler body directly.
+    // For simplicity, re-run the clear logic here:
+    if (!confirm('Tem certeza que deseja limpar o histórico? Esta ação não pode ser desfeita.')) return;
+    try {
+        localStorage.removeItem('historico');
+        localStorage.removeItem('done1');
+        localStorage.removeItem('done2');
+        localStorage.removeItem('done3');
+        localStorage.removeItem('done4');
+        renderHistorico();
+        document.getElementById('res1').textContent = '';
+        document.getElementById('res2').textContent = '';
+        document.getElementById('res3').textContent = '';
+        document.getElementById('res4').textContent = '';
+    } catch (e) { console.error('Erro ao limpar histórico:', e); alert('Não foi possível limpar o histórico. Veja o console.'); }
+});
+
+// Confetti simple implementation
+function createConfettiCanvas(){
+    let c = document.getElementById('confetti-canvas');
+    if (!c) {
+        c = document.createElement('canvas');
+        c.id = 'confetti-canvas';
+        c.style.position = 'fixed';
+        c.style.top = '0';
+        c.style.left = '0';
+        c.style.width = '100%';
+        c.style.height = '100%';
+        c.style.pointerEvents = 'none';
+        c.style.zIndex = 9999;
+        document.body.appendChild(c);
+    }
+    return c;
+}
+
+function showConfetti(duration = 1500) {
+    const canvas = createConfettiCanvas();
+    const ctx = canvas.getContext('2d');
+    const w = canvas.width = window.innerWidth;
+    const h = canvas.height = window.innerHeight;
+    const pieces = [];
+    for (let i=0;i<80;i++) pieces.push({x:Math.random()*w, y:Math.random()*h - h, r:Math.random()*6+4, d:Math.random()*40+10, c:['#ff595e','#ffca3a','#8ac926','#1982c4','#6a4c93'][Math.floor(Math.random()*5)], vx:(Math.random()-0.5)*2, vy:Math.random()*3+2});
+    const start = performance.now();
+    function draw(now){
+        const t = now - start;
+        ctx.clearRect(0,0,w,h);
+        pieces.forEach(p=>{
+            p.x += p.vx; p.y += p.vy; p.vy += 0.05;
+            ctx.fillStyle = p.c; ctx.fillRect(p.x, p.y, p.r, p.r*0.6);
+        });
+        if (t < duration) requestAnimationFrame(draw);
+        else ctx.clearRect(0,0,w,h);
+    }
+    requestAnimationFrame(draw);
+}
+
+// Sound (small beep) base64 data URI
+const beepAudio = new Audio('data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=');
+
+// Play confetti + sound when saving
+const oldSaveBtn = document.getElementById('salvar');
+oldSaveBtn.addEventListener('click', function(){
+    try{ showConfetti(1200); beepAudio.play().catch(()=>{}); } catch(e){}
+});
+
+// Play sound on mark done
+['botao1','botao2','botao3','botao4'].forEach(id=>{
+    document.getElementById(id).addEventListener('click', function(){ try{ beepAudio.play().catch(()=>{}); }catch(e){} });
+});
+
+// Keyboard shortcuts: Ctrl+S -> save, Ctrl+Shift+F -> toggle fun, Ctrl+E -> export
+document.addEventListener('keydown', function(e){
+    if (e.ctrlKey && e.key.toLowerCase() === 's') { e.preventDefault(); document.getElementById('salvar').click(); }
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'f') { e.preventDefault(); document.getElementById('toggleFun').click(); }
+    if (e.ctrlKey && e.key.toLowerCase() === 'e') { e.preventDefault(); document.getElementById('exportBtn').click(); }
+});
+
 // Restaurar checks ao abrir a página
 function restoreChecks() {
     try {
