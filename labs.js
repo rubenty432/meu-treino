@@ -352,6 +352,394 @@ aws s3 cp backup-*.tar.gz s3://my-backups/
 
 echo "✅ Deploy completo!"
 `
+    },
+    lua: {
+        title: "Lua 🌙",
+        description: "Scripting leve e rápido",
+        code: `-- Lua para Roblox/Games
+local function calculateStreak(entries)
+    local streak = 0
+    local today = os.date("%d/%m/%Y")
+    
+    for i = #entries, 1, -1 do
+        if entries[i].date == today then
+            streak = streak + 1
+        else
+            break
+        end
+    end
+    
+    return streak
+end
+
+local Habit = {}
+Habit.__index = Habit
+
+function Habit.new(name)
+    return setmetatable({
+        name = name,
+        entries = {},
+        streak = 0
+    }, Habit)
+end
+
+function Habit:logEntry()
+    table.insert(self.entries, {date = os.date("%d/%m/%Y")})
+    self.streak = calculateStreak(self.entries)
+end
+
+local myHabit = Habit.new("Exercício")
+myHabit:logEntry()
+print("Streak: " .. myHabit.streak .. " dias")`
+    },
+    swift: {
+        title: "Swift 🍎",
+        description: "iOS App nativo",
+        code: `// Swift para iOS
+import SwiftUI
+
+struct Habit: Identifiable {
+    let id = UUID()
+    var name: String
+    var entries: [Date] = []
+    
+    var streak: Int {
+        var count = 0
+        let calendar = Calendar.current
+        var checkDate = Date()
+        
+        for entry in entries.sorted(by: >) {
+            if calendar.isDateInToday(entry) || 
+               calendar.isDateInYesterday(entry) {
+                count += 1
+            } else {
+                break
+            }
+        }
+        return count
+    }
+}
+
+struct ContentView: View {
+    @State var habits: [Habit] = []
+    
+    var body: some View {
+        List(habits) { habit in
+            VStack(alignment: .leading) {
+                Text(habit.name).font(.headline)
+                Text("Streak: \\(habit.streak) dias")
+                    .font(.subheadline)
+                    .foregroundColor(.green)
+            }
+        }
+    }
+}`
+    },
+    dart: {
+        title: "Dart 🎯",
+        description: "Flutter Cross-Platform",
+        code: `// Dart com Flutter
+import 'package:flutter/material.dart';
+
+class Habit {
+  final String name;
+  final List<DateTime> entries;
+  
+  Habit({required this.name, this.entries = const []});
+  
+  int calculateStreak() {
+    int streak = 0;
+    final now = DateTime.now();
+    
+    for (var entry in entries.toList().reversed) {
+      final difference = now.difference(entry).inDays;
+      if (difference <= 1) {
+        streak++;
+      } else {
+        break;
+      }
+    }
+    return streak;
+  }
+}
+
+class HabitCard extends StatelessWidget {
+  final Habit habit;
+  
+  HabitCard({required this.habit});
+  
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          children: [
+            Text(habit.name, style: TextStyle(fontSize: 18)),
+            Text('Streak: ${habit.calculateStreak()} dias',
+              style: TextStyle(color: Colors.green))
+          ],
+        ),
+      ),
+    );
+  }
+}`
+    },
+    cpplusplus: {
+        title: "C++ ⚡",
+        description: "Performance extrema",
+        code: `// C++ 17 para sistemas de alto desempenho
+#include <vector>
+#include <string>
+#include <chrono>
+
+struct Habit {
+    std::string name;
+    std::vector<std::chrono::system_clock::time_point> entries;
+};
+
+class HabitTracker {
+private:
+    std::vector<Habit> habits;
+    
+public:
+    int calculateStreak(const Habit& habit) {
+        int streak = 0;
+        auto now = std::chrono::system_clock::now();
+        
+        for (auto it = habit.entries.rbegin(); 
+             it != habit.entries.rend(); ++it) {
+            auto diff = std::chrono::duration_cast
+                <std::chrono::hours>(now - *it);
+            
+            if (diff.count() <= 24) {
+                streak++;
+            } else {
+                break;
+            }
+        }
+        return streak;
+    }
+};
+
+int main() {
+    HabitTracker tracker;
+    return 0;
+}`
+    },
+    r: {
+        title: "R 📊",
+        description: "Data Science e Análise",
+        code: `# R para análise de hábitos
+library(dplyr)
+library(ggplot2)
+
+# Carregar dados
+habits_data <- read.csv("habits.csv")
+
+# Análise descritiva
+habits_summary <- habits_data %>%
+  group_by(habit_name) %>%
+  summarise(
+    total_entries = n(),
+    completion_rate = mean(completed) * 100,
+    last_entry = max(date),
+    .groups = 'drop'
+  ) %>%
+  arrange(desc(completion_rate))
+
+# Visualização
+ggplot(habits_summary, aes(x = habit_name, y = completion_rate)) +
+  geom_col(fill = "#667eea") +
+  geom_text(aes(label = paste0(round(completion_rate), "%")), 
+            vjust = -0.5) +
+  labs(title = "Taxa de Conclusão por Hábito",
+       x = "Hábito", y = "Taxa (%)") +
+  theme_minimal()
+
+print(habits_summary)`
+    },
+    scala: {
+        title: "Scala 🔥",
+        description: "FP + OOP",
+        code: `// Scala - Functional Programming
+import scala.collection.mutable
+
+case class Habit(name: String, entries: List[String])
+
+object HabitAnalyzer {
+  def calculateStreak(habit: Habit): Int = {
+    habit.entries
+      .reverse
+      .takeWhile(_ => true)
+      .length
+  }
+  
+  def filterByCompletion(habits: List[Habit], 
+                         minStreak: Int): List[Habit] = {
+    habits.filter(h => calculateStreak(h) >= minStreak)
+  }
+  
+  def analyzeAll(habits: List[Habit]): Map[String, Int] = {
+    habits.map(h => (h.name, calculateStreak(h))).toMap
+  }
+}
+
+val habits = List(
+  Habit("Exercício", List("01/12", "02/12", "03/12")),
+  Habit("Leitura", List("01/12", "02/12"))
+)
+
+val analysis = HabitAnalyzer.analyzeAll(habits)
+println(analysis)`
+    },
+    elixir: {
+        title: "Elixir 💜",
+        description: "Programação Funcional",
+        code: `# Elixir para tempo real
+defmodule HabitTracker do
+  def calculate_streak(entries) do
+    entries
+    |> Enum.reverse()
+    |> Enum.reduce_while(0, fn _entry, acc ->
+      if acc < length(entries) do
+        {:cont, acc + 1}
+      else
+        {:halt, acc}
+      end
+    end)
+  end
+  
+  def get_habit_stats(habit_id) do
+    entries = get_entries(habit_id)
+    
+    %{
+      name: get_habit_name(habit_id),
+      total_entries: length(entries),
+      streak: calculate_streak(entries),
+      last_entry: List.first(entries),
+      completion_rate: 
+        (length(entries) / 30) * 100
+    }
+  end
+end
+
+# Uso com Phoenix LiveView para real-time updates
+{:ok, stats} = HabitTracker.get_habit_stats(1)
+IO.inspect(stats)`
+    },
+    clojure: {
+        title: "Clojure 🍀",
+        description: "LISP moderno",
+        code: `; Clojure para processamento de dados
+(defn calculate-streak [entries]
+  (->> entries
+       reverse
+       (take-while identity)
+       count))
+
+(defn analyze-habits [data]
+  (map #(assoc % 
+    :streak (calculate-streak (:entries %))
+    :completion-rate (* 100 (/ (count (:entries %)) 30)))
+    data))
+
+(defn best-habits [habits threshold]
+  (filter #(>= (:completion-rate %) threshold) habits))
+
+; Dados de exemplo
+(def my-habits
+  [{:name "Exercício"
+    :entries [true true true false true]}
+   {:name "Leitura"
+    :entries [true true true true true]}])
+
+(def analyzed (analyze-habits my-habits))
+(println (best-habits analyzed 80))`
+    },
+    perl: {
+        title: "Perl 🐪",
+        description: "Expressões Regulares",
+        code: `#!/usr/bin/perl
+# Perl para processamento de logs
+
+use strict;
+use warnings;
+use DateTime;
+
+sub calculate_streak {
+    my @entries = @_;
+    my $streak = 0;
+    
+    foreach my $entry (reverse @entries) {
+        $streak++ if defined $entry;
+    }
+    
+    return $streak;
+}
+
+sub parse_habit_log {
+    my $file = shift;
+    open my $fh, '<', $file or die "Cannot open: $!";
+    
+    my %habits;
+    while (<$fh>) {
+        chomp;
+        my ($date, $habit, $completed) = split /,/;
+        
+        push @{$habits{$habit}}, $completed;
+    }
+    close $fh;
+    
+    foreach my $habit (keys %habits) {
+        my $streak = calculate_streak(
+            @{$habits{$habit}}
+        );
+        print "$habit: streak = $streak\\n";
+    }
+}
+
+parse_habit_log("habits.log");`
+    },
+    groovy: {
+        title: "Groovy 🔗",
+        description: "Java Dinâmico",
+        code: `// Groovy para scripting JVM
+@Grab('org.json:json:20210307')
+import groovy.json.JsonSlurper
+
+class HabitManager {
+    List habits = []
+    
+    def addHabit(String name) {
+        habits << [name: name, entries: []]
+    }
+    
+    def logEntry(String habitName) {
+        def habit = habits.find { it.name == habitName }
+        habit?.entries?.add(new Date())
+    }
+    
+    def getStreak(String habitName) {
+        def habit = habits.find { it.name == habitName }
+        return habit?.entries?.size() ?: 0
+    }
+    
+    def getStats() {
+        return habits.collect { habit ->
+            [
+                name: habit.name,
+                total: habit.entries.size(),
+                streak: getStreak(habit.name)
+            ]
+        }
+    }
+}
+
+def manager = new HabitManager()
+manager.addHabit("Exercício")
+manager.logEntry("Exercício")
+println manager.getStats()`
     }
 };
 
