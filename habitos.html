@@ -7,62 +7,305 @@
     <meta name="theme-color" content="#667eea">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Hábitos</title>
+    <title>Hábitos — Sepp Premium</title>
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="habitos.css">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23667eea' width='192' height='192'/><text x='50%' y='50%' font-size='100' fill='white' text-anchor='middle' dominant-baseline='middle' font-family='Arial'>✔</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+
+        .page-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .menu {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            border-radius: 50px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 100;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu a {
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .menu a:hover {
+            color: #ffd60a;
+            transform: translateY(-2px);
+        }
+
+        .menu button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .menu button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(20deg);
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin: 40px 0 30px 0;
+            font-size: 32px;
+            background: linear-gradient(135deg, #fff 0%, #ffd60a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .habitos {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .habitos label {
+            display: block;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+            margin: 20px 0 8px 0;
+            font-size: 14px;
+        }
+
+        .habitos input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .habitos input:focus {
+            outline: none;
+            border-color: #ffd60a;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 15px rgba(255, 214, 10, 0.3);
+        }
+
+        .habitos input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .controls button,
+        .controls label {
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+
+        #salvar {
+            background: linear-gradient(135deg, #ffd60a 0%, #ff006e 100%);
+            color: #1a1a2e;
+            grid-column: 1 / -1;
+        }
+
+        #salvar:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 214, 10, 0.4);
+        }
+
+        #clearHistory {
+            background: rgba(255, 100, 100, 0.8);
+            color: white;
+        }
+
+        #undoClear {
+            background: rgba(100, 200, 255, 0.8);
+            color: white;
+        }
+
+        #exportBtn {
+            background: rgba(100, 255, 150, 0.8);
+            color: white;
+        }
+
+        .importLabel {
+            background: rgba(200, 150, 255, 0.8);
+            color: white;
+            text-align: center;
+        }
+
+        #toggleFun {
+            background: rgba(255, 200, 100, 0.8);
+            color: white;
+        }
+
+        .controls button:hover,
+        .controls label:hover {
+            transform: translateY(-2px);
+            opacity: 1;
+        }
+
+        .guardar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            color: white;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .guardar > div {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 4px solid #ffd60a;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .noscript-warning {
+            background: rgba(255, 100, 100, 0.9);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 600px) {
+            .menu {
+                top: 10px;
+                right: 10px;
+                padding: 10px 12px;
+                gap: 8px;
+            }
+
+            .menu a {
+                font-size: 12px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .habitos {
+                padding: 20px;
+            }
+
+            .controls {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            #salvar {
+                grid-column: 1 / -1;
+            }
+        }
+    </style>
 </head>
 <body>
-
-    <div class="menu">
-        <a href="treino1.html">Menu</a>
-        <a href="habitos.html">Hábitos</a>
-        <a href="stats.html">Estatísticas</a>
-        <a href="labs.html">Labs</a>
-        <button id="dark-mode-btn" type="button" title="Alternar modo escuro">🌙</button>
-        <button id="installBtn" style="background:none;border:none;cursor:pointer;font-size:16px;display:none;">📲 Instalar</button>
-    </div>
-
-    <div class="habitos">
-        <label for="hab1">Primeiro hábito</label>
-        <input id="hab1" type="text" placeholder="Hábito 1">
-        <button id="botao1" class="botao1" type="button">Feito</button>
-        <span id="res1"></span>
-
-        <label for="hab2">Segundo hábito</label>
-        <input id="hab2" type="text" placeholder="Hábito 2">
-        <button id="botao2" class="botao2" type="button">Feito</button>
-        <span id="res2"></span>
-
-        <label for="hab3">Terceiro hábito</label>
-        <input id="hab3" type="text" placeholder="Hábito 3">
-        <button id="botao3" class="botao3" type="button">Feito</button>
-        <span id="res3"></span>
-
-        <label for="hab4">Quarto hábito</label>
-        <input id="hab4" type="text" placeholder="Hábito 4">
-        <button id="botao4" class="botao4" type="button">Feito</button>
-        <span id="res4"></span>
-
-        <p></p>
-        <div class="controls">
-            <button class="salvar" id="salvar" type="button">Salvar hábitos</button>
-            <button id="clearHistory" type="button">Limpar histórico</button>
-            <button id="undoClear" type="button" title="Desfazer último limpar">Desfazer Limpeza</button>
-            <button id="exportBtn" type="button">Exportar JSON</button>
-            <label class="importLabel" for="importFile">Importar</label>
-            <input id="importFile" type="file" accept="application/json" style="display:none">
-            <button id="toggleFun" type="button">Modo Divertido 🎉</button>
+    <div class="page-container">
+        <div class="menu">
+            <a href="treino1.html">Menu</a>
+            <a href="habitos.html">Hábitos</a>
+            <a href="stats.html">Estatísticas</a>
+            <a href="labs.html">Labs</a>
+            <button id="dark-mode-btn" type="button" title="Alternar modo escuro">🌙</button>
+            <button id="installBtn" style="background:none;border:none;cursor:pointer;font-size:16px;display:none;">📲 Instalar</button>
         </div>
+
+        <h1>📝 Meus Hábitos</h1>
+
+        <div class="habitos">
+            <label for="hab1">🎯 Primeiro hábito</label>
+            <input id="hab1" type="text" placeholder="Ex: Exercício (30 min)">
+
+            <label for="hab2">🎯 Segundo hábito</label>
+            <input id="hab2" type="text" placeholder="Ex: Leitura (1 hora)">
+
+            <label for="hab3">🎯 Terceiro hábito</label>
+            <input id="hab3" type="text" placeholder="Ex: Meditação (10 min)">
+
+            <label for="hab4">🎯 Quarto hábito</label>
+            <input id="hab4" type="text" placeholder="Ex: Aprender (2 horas)">
+
+            <div class="controls">
+                <button class="salvar" id="salvar" type="button">💾 Salvar hábitos</button>
+                <button id="clearHistory" type="button">🗑️ Limpar</button>
+                <button id="undoClear" type="button" title="Desfazer último limpar">↩️ Desfazer</button>
+                <button id="exportBtn" type="button">📥 Exportar</button>
+                <label class="importLabel" for="importFile">📤 Importar</label>
+                <input id="importFile" type="file" accept="application/json" style="display:none">
+                <button id="toggleFun" type="button">🎉 Modo Divertido</button>
+            </div>
+        </div>
+
+        <div class="guardar" id="guardar" aria-live="polite"></div>
+
+        <noscript>
+            <div class="noscript-warning">⚠️ Este site usa JavaScript para funcionar corretamente. Por favor, ative o JavaScript.</div>
+        </noscript>
     </div>
-
-    <p></p>
-    <div class="guardar" id="guardar" aria-live="polite"></div>
-
-    <noscript>
-        <div class="noscript-warning">Este site usa JavaScript para funcionar corretamente. Por favor, ative o JavaScript.</div>
-    </noscript>
 
     <script src="script.min.js"></script>
     <script>
@@ -97,6 +340,9 @@
                 installBtn.style.display = 'none';
             }
         });
+    </script>
+</body>
+</html>
     </script>
 </body>
 </html>
