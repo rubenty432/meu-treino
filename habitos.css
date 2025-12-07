@@ -1,0 +1,76 @@
+body {
+    background: white;
+    min-height: 100vh;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Inputs */
+input {
+    display: block;
+    margin-bottom: 24px;
+    padding: 10px;
+    font-size: 15px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    transition: 0.25s;
+}
+
+/* Caixa principal */
+.habitos {
+    width: 450px;
+    padding: 20px;
+    background-color: orange;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+/* Botões (estilo unificado) */
+.botao1, .botao2, .botao3, .botao4, .salvar {
+    border: none;
+    border-radius: 20px;
+    padding: 10px;
+    width: 115px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.botao1:hover, .botao2:hover, .botao3:hover, .botao4:hover, .salvar:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+    background: linear-gradient(135deg, #5aa3ff, #3c86cc);
+}
+
+.botao1:active, .botao2:active, .botao3:active, .botao4:active, .salvar:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* Menu */
+.menu {
+    background-color: white;
+    padding: 10px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.menu a {
+    text-decoration: none;
+    color: black;
+    font-size: 22px;
+    font-family: 'Franklin Gothic Medium', Arial;
+}
+
+/* Área onde guardas hábitos */
+.guardar {
+    width: 100%;
+    max-width: 1000px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+}

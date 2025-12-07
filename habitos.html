@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hábitos</title>
+    <link rel="stylesheet" href="habitos.css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+
+    <div class="menu">
+        <a href="treino1.html" rel="prev">Menu</a>
+        <a href="habitos.html">Hábitos</a>
+    </div>
+
+    <div class="habitos">
+        <label for="hab1">Primeiro hábito</label>
+        <input id="hab1" type="text" placeholder="Hábito 1">
+        <button id="botao1" class="botao1" type="button">Feito</button>
+        <span id="res1"></span>
+
+        <label for="hab2">Segundo hábito</label>
+        <input id="hab2" type="text" placeholder="Hábito 2">
+        <button id="botao2" class="botao2" type="button">Feito</button>
+        <span id="res2"></span>
+
+        <label for="hab3">Terceiro hábito</label>
+        <input id="hab3" type="text" placeholder="Hábito 3">
+        <button id="botao3" class="botao3" type="button">Feito</button>
+        <span id="res3"></span>
+
+        <label for="hab4">Quarto hábito</label>
+        <input id="hab4" type="text" placeholder="Hábito 4">
+        <button id="botao4" class="botao4" type="button">Feito</button>
+        <span id="res4"></span>
+
+        <p></p>
+        <button class="salvar" id="salvar" type="button">Salvar hábitos</button>
+    </div>
+
+    <p></p>
+    <div class="guardar" id="guardar"></div>
+
+<script>
+    // Função auxiliar para renderizar histórico salvo
+    const guardarDiv = document.getElementById("guardar");
+    function renderHistorico() {
+        guardarDiv.innerHTML = '';
+        const historico = JSON.parse(localStorage.getItem('historico') || '[]');
+        historico.forEach(entry => {
+            const novoGrupo = document.createElement('div');
+            novoGrupo.innerHTML = `
+                <p>✔️ ${entry.hab1 || ''}</p>
+                <p>✔️ ${entry.hab2 || ''}</p>
+                <p>✔️ ${entry.hab3 || ''}</p>
+                <p>✔️ ${entry.hab4 || ''}</p>
+                <small>${entry.date || ''}</small>
+                <hr>
+            `;
+            guardarDiv.appendChild(novoGrupo);
+        });
+    }
+
+    // Restaurar inputs e checks ao abrir a página
+    document.getElementById("hab1").value = localStorage.getItem("hab1") || "";
+    document.getElementById("hab2").value = localStorage.getItem("hab2") || "";
+    document.getElementById("hab3").value = localStorage.getItem("hab3") || "";
+    document.getElementById("hab4").value = localStorage.getItem("hab4") || "";
+
+    // Restaurar checks
+    if (localStorage.getItem('done1') === 'true') document.getElementById('res1').textContent = '✔️';
+    if (localStorage.getItem('done2') === 'true') document.getElementById('res2').textContent = '✔️';
+    if (localStorage.getItem('done3') === 'true') document.getElementById('res3').textContent = '✔️';
+    if (localStorage.getItem('done4') === 'true') document.getElementById('res4').textContent = '✔️';
+
+    // Event listeners para marcar como feito (persistir estado)
+    document.getElementById("botao1").addEventListener("click", () => {
+        document.getElementById("res1").textContent = "✔️";
+        localStorage.setItem('done1','true');
+    });
+    document.getElementById("botao2").addEventListener("click", () => {
+        document.getElementById("res2").textContent = "✔️";
+        localStorage.setItem('done2','true');
+    });
+    document.getElementById("botao3").addEventListener("click", () => {
+        document.getElementById("res3").textContent = "✔️";
+        localStorage.setItem('done3','true');
+    });
+    document.getElementById("botao4").addEventListener("click", () => {
+        document.getElementById("res4").textContent = "✔️";
+        localStorage.setItem('done4','true');
+    });
+
+    // Salvando hábitos: persiste entradas e adiciona ao histórico
+    document.getElementById("salvar").addEventListener("click", function() {
+        const hab1 = document.getElementById("hab1").value.trim();
+        const hab2 = document.getElementById("hab2").value.trim();
+        const hab3 = document.getElementById("hab3").value.trim();
+        const hab4 = document.getElementById("hab4").value.trim();
+
+        localStorage.setItem("hab1", hab1);
+        localStorage.setItem("hab2", hab2);
+        localStorage.setItem("hab3", hab3);
+        localStorage.setItem("hab4", hab4);
+
+        // histórico como array de entradas
+        const historico = JSON.parse(localStorage.getItem('historico') || '[]');
+        historico.push({ hab1, hab2, hab3, hab4, date: new Date().toLocaleString() });
+        localStorage.setItem('historico', JSON.stringify(historico));
+
+        renderHistorico();
+
+        // Resetar inputs e checks locais (manter persistência das entradas já salvas)
+        document.getElementById("hab1").value = "";
+        document.getElementById("hab2").value = "";
+        document.getElementById("hab3").value = "";
+        document.getElementById("hab4").value = "";
+        document.getElementById("hab1").focus();
+    });
+
+    // Renderiza histórico existente ao carregar
+    renderHistorico();
+</script>
+
+</body>
+</html>
