@@ -34,6 +34,8 @@
         <a href="treino1.html">Menu</a>
         <a href="habitos.html">Hábitos</a>
         <a href="stats.html">Estatísticas</a>
+        <a href="labs.html">Labs</a>
+        <button id="dark-mode-btn" type="button" title="Alternar modo escuro">🌙</button>
     </div>
 
     <h1>Estatísticas dos Seus Hábitos 📊</h1>
@@ -66,5 +68,21 @@
     </div>
 
     <script src="stats.js"></script>
+    <script>
+        // Dark mode toggle
+        const darkModeBtn = document.getElementById('dark-mode-btn');
+        const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+        
+        if (savedDarkMode) {
+            document.body.classList.add('dark-mode');
+            darkModeBtn.textContent = '☀️';
+        }
+        
+        darkModeBtn.addEventListener('click', () => {
+            const isDark = document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', isDark);
+            darkModeBtn.textContent = isDark ? '☀️' : '🌙';
+        });
+    </script>
 </body>
 </html>

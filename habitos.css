@@ -123,3 +123,145 @@ input {
     pointer-events: none;
     z-index: 9999;
 }
+
+/* Dark Mode Styles */
+body.dark-mode {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+}
+
+body.dark-mode .menu {
+    background-color: #2a2a2a;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+
+body.dark-mode .menu a {
+    color: #e0e0e0;
+}
+
+body.dark-mode .menu button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+body.dark-mode input {
+    background-color: #333;
+    color: #e0e0e0;
+    border-color: #555;
+}
+
+body.dark-mode input::placeholder {
+    color: #999;
+}
+
+body.dark-mode .habitos {
+    background: linear-gradient(135deg, #2a2a2a, #333);
+    color: #e0e0e0;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+
+body.dark-mode .guardar {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+
+body.dark-mode .controls button {
+    color: #1a1a1a;
+    font-weight: bold;
+}
+
+body.dark-mode .controls #toggleFun {
+    background: #ffc107;
+}
+
+body.dark-mode .controls #undoClear {
+    background: #ff6b9d;
+}
+
+body.dark-mode .controls #exportBtn {
+    background: #4caf50;
+}
+
+body.dark-mode .controls .importLabel {
+    background: #00bcd4;
+    color: #1a1a1a;
+}
+
+body.dark-mode .noscript-warning {
+    background: #8b3333;
+    color: #ffdddd;
+}
+
+body.dark-mode footer {
+    background: #2a2a2a;
+    color: #e0e0e0;
+}
+
+body.dark-mode footer a {
+    color: #4caf50;
+}
+
+body.dark-mode h1, body.dark-mode h2, body.dark-mode h3 {
+    color: #e0e0e0;
+}
+
+body.dark-mode .lead {
+    color: #b0b0b0;
+}
+
+body.dark-mode .frase1, body.dark-mode .frase2 {
+    color: #b0b0b0;
+}
+
+/* Dark mode lab cards */
+body.dark-mode .lab-card {
+    background: #2a2a2a;
+    color: #e0e0e0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+body.dark-mode .lab-card h3 {
+    color: #4caf50;
+}
+
+/* Dark mode modal */
+body.dark-mode .modal {
+    background: rgba(0,0,0,0.9);
+}
+
+body.dark-mode .modal-content {
+    background: #2a2a2a;
+    color: #e0e0e0;
+}
+
+body.dark-mode .modal-content code {
+    background: #1a1a1a;
+    color: #4caf50;
+}
+
+body.dark-mode .close-btn {
+    color: #e0e0e0;
+}
+
+body.dark-mode .close-btn:hover {
+    color: #fff;
+}
+
+/* Stats page dark mode */
+body.dark-mode .stat-card {
+    background: #2a2a2a;
+    color: #e0e0e0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+body.dark-mode .stat-value {
+    color: #4caf50;
+}
+
+body.dark-mode canvas {
+    filter: invert(0.95);
+}
