@@ -1,0 +1,114 @@
+.botao1 {
+    background-color: white;
+    color: black;
+    padding: 5px 10px;
+    border: black auto 2px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+
+}
+
+.botao2 {
+    background-color: white;
+    color: black;
+    padding: 5px 10px;
+    border: black auto 2px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.botao3 {
+    background-color: white;
+    color: black;
+    padding: 5px 10px;
+    border: black auto 2px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.botao4 {
+    background-color: white;
+    color: black;
+    padding: 5px 10px;
+    border: black auto 2px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.botao1:hover {
+    background-color: red;
+}
+
+.botao2:hover {
+    background-color: blue;
+}
+
+.botao3:hover {
+    background-color: green;
+}
+
+.botao4:hover {
+    background-color: yellow;
+}
+
+.grupodetarefas {
+    background-color: lightgray;
+    padding: 10px;
+    width: 300px;
+    height: 450px;
+    margin: 10px 0;
+    border-radius: 10px;
+
+}
+
+.menu {
+    background-color: lightblue;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 2px solid black;
+    border-radius: 10px;
+
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    font-size: 18px;
+    text-align: left;
+    font-size: 25px;
+}
+
+.caixa1, .caixa2, .caixa3, .caixa4 {
+    border-radius: 10px;
+    border: 2px solid white;
+    padding: 2px; 
+    transition: 0.2s; 
+    cursor: pointer; 
+} 
+.caixa1:hover, .caixa2:hover, .caixa3:hover, .caixa4:hover {
+    border: 2px solid black;
+} 
+.titulo1, .titulo2, .titulo3, .titulo4 {
+    font-size: 20px;
+    font-weight: bold;
+} 
+.tarefa1, .tarefa2, .tarefa3, .tarefa4 {
+    margin-bottom: 15px;
+}
+
+    body.dark-mode {
+            background-color: #333;
+            color: white;
+        }
+        body.dark-mode .menu {
+            background-color: #555;
+        }
+        body.dark-mode input {
+            background-color: #666;
+            color: rgb(255, 255, 255);
+        }
